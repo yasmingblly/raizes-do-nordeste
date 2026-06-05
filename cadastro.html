@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro - Raízes do Nordeste</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/login.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <header class="header">
+        <a class="logo" href="index.html">Raízes do Nordeste</a>
+        <nav class="nav">
+            <a href="index.html">Home</a>
+            <a href="login.html">Entrar</a>
+            <a href="privacidade.html">Privacidade</a>
+        </nav>
+    </header>
+
+    <main class="auth-page">
+        <section class="auth-card">
+            <h1>Cadastro</h1>
+            <p>Crie sua conta para finalizar pedidos e acumular pontos.</p>
+
+            <form class="form" id="cadastroForm">
+                <label>
+                    Nome completo
+                    <input type="text" name="nome" placeholder="Seu nome" required>
+                </label>
+                <label>
+                    E-mail
+                    <input type="email" name="email" placeholder="seu@email.com" required>
+                </label>
+                <label>
+                    Telefone
+                    <input type="tel" name="telefone" placeholder="(00) 00000-0000" required>
+                </label>
+                <label>
+                    Senha
+                    <input type="password" name="senha" placeholder="Crie uma senha" required>
+                </label>
+                <label class="check">
+                    <input type="checkbox" name="lgpd" required>
+                    <span>Li e aceito a Política de Privacidade/LGPD para uso dos meus dados no sistema.</span>
+                </label>
+                <button class="btn gold" type="submit">Criar conta</button>
+            </form>
+        </section>
+    </main>
+
+    <script src="js/app.js"></script>
+</body>
+
+</html>

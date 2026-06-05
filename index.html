@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Raízes do Nordeste</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <header class="header">
+        <a class="logo" href="index.html">Raízes do Nordeste</a>
+        <nav class="nav">
+            <a class="active" href="index.html">Home</a>
+            <a href="cardapio.html">Cardápio</a>
+            <a href="carrinho.html">Carrinho</a>
+            <a href="fidelidade.html">Pontos</a>
+            <a href="login.html">Entrar</a>
+        </nav>
+    </header>
+
+    <main>
+        <section class="hero">
+            <div class="hero-inner">
+                <span class="badge">Promoções do dia</span>
+                <h1>Sabores nordestinos para pedir e retirar sem fila.</h1>
+                <p>
+                    Escolha sua unidade, veja o cardápio disponível e acompanhe o pedido até a retirada.
+                </p>
+                <div class="actions">
+                    <a class="btn gold" href="cardapio.html">Ver cardápio</a>
+                    <a class="btn light" href="login.html">Acessar conta</a>
+                </div>
+            </div>
+        </section>
+
+        <section class="page">
+            <div class="section-title">
+                <h2>Escolha sua unidade</h2>
+                <p>A unidade selecionada define os produtos exibidos no cardápio.</p>
+            </div>
+
+            <div class="card">
+                <label class="form">
+                    <span>Unidade</span>
+                    <select id="unidade">
+                        <option value="">Selecione</option>
+                        <option value="recife">Recife</option>
+                        <option value="fortaleza">Fortaleza</option>
+                        <option value="salvador">Salvador</option>
+                    </select>
+                </label>
+                <div class="actions">
+                    <a class="btn gold" href="cardapio.html">Continuar</a>
+                </div>
+            </div>
+        </section>
+
+        <section class="page">
+            <div class="section-title">
+                <h2>Campanhas em destaque</h2>
+                <p>Ofertas com identidade regional e benefícios para clientes cadastrados.</p>
+            </div>
+
+            <div class="grid">
+                <article class="card">
+                    <span class="badge">Dourado da semana</span>
+                    <h3>Tapioca Nordestina</h3>
+                    <p>Frango, queijo coalho e catupiry.</p>
+                    <strong class="price">R$ 14,90</strong>
+                </article>
+                <article class="card">
+                    <span class="badge">Combo</span>
+                    <h3>Cuscuz + Suco</h3>
+                    <p>Pedido completo para retirada rápida.</p>
+                    <strong class="price">R$ 22,90</strong>
+                </article>
+                <article class="card">
+                    <span class="badge">Pontos</span>
+                    <h3>Clube Raízes</h3>
+                    <p>Acumule pontos e troque por descontos.</p>
+                    <strong class="points">120 pontos</strong>
+                </article>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <p>© 2026 Raízes do Nordeste</p>
+        <p>Uso de dados com transparência, consentimento e opção de exclusão.</p>
+    </footer>
+
+    <script src="js/app.js"></script>
+</body>
+
+</html>

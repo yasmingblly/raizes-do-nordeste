@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Painel do Atendente - Raízes do Nordeste</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <header class="header">
+        <a class="logo" href="index.html">Raízes do Nordeste</a>
+        <nav class="nav">
+            <a href="admin.html">Gerente</a>
+            <a class="active" href="atendente.html">Atendente</a>
+            <a href="cozinha.html">Cozinha</a>
+        </nav>
+    </header>
+
+    <main class="page">
+        <div class="section-title">
+            <h1>Painel do Atendente</h1>
+            <p>Registro de pedidos feitos no balcão e acompanhamento rápido dos clientes.</p>
+        </div>
+
+        <section class="grid two">
+            <form class="card form">
+                <label>
+                    Produto
+                    <select>
+                        <option>Tapioca Nordestina</option>
+                        <option>Cuscuz Completo</option>
+                        <option>Bolo de Macaxeira</option>
+                    </select>
+                </label>
+                <label>
+                    Nome do cliente
+                    <input type="text" placeholder="Cliente do balcão">
+                </label>
+                <button class="btn gold" type="button">Registrar pedido</button>
+            </form>
+
+            <aside class="card">
+                <span class="badge">Fila</span>
+                <h3>Pedidos recentes</h3>
+                <p>#1032 - Recebido</p>
+                <p>#1031 - Em preparo</p>
+                <p>#1030 - Pronto para retirada</p>
+            </aside>
+        </section>
+    </main>
+</body>
+
+</html>

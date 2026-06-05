@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Painel da Cozinha - Raízes do Nordeste</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <header class="header">
+        <a class="logo" href="index.html">Raízes do Nordeste</a>
+        <nav class="nav">
+            <a href="admin.html">Gerente</a>
+            <a href="atendente.html">Atendente</a>
+            <a class="active" href="cozinha.html">Cozinha</a>
+        </nav>
+    </header>
+
+    <main class="page">
+        <div class="section-title">
+            <h1>Painel da Cozinha</h1>
+            <p>Visualização dos pedidos recebidos e atualização simulada do status.</p>
+        </div>
+
+        <section class="grid">
+            <article class="card">
+                <span class="badge">Recebido</span>
+                <h3>#1032 - Tapioca Nordestina</h3>
+                <p>Sem cebola, retirar na unidade Recife.</p>
+                <button class="btn gold" type="button">Iniciar preparo</button>
+            </article>
+            <article class="card">
+                <span class="badge">Em preparo</span>
+                <h3>#1031 - Cuscuz Completo</h3>
+                <p>Pedido do balcão.</p>
+                <button class="btn gold" type="button">Marcar pronto</button>
+            </article>
+            <article class="card">
+                <span class="badge">Pronto</span>
+                <h3>#1030 - Bolo de Macaxeira</h3>
+                <p>Aguardando retirada.</p>
+                <button class="btn light" type="button">Concluir</button>
+            </article>
+        </section>
+    </main>
+</body>
+
+</html>

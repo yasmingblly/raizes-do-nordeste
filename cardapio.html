@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cardápio - Raízes do Nordeste</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <header class="header">
+        <a class="logo" href="index.html">Raízes do Nordeste</a>
+        <nav class="nav">
+            <a href="index.html">Home</a>
+            <a class="active" href="cardapio.html">Cardápio</a>
+            <a href="carrinho.html">Carrinho</a>
+            <a href="pedidos.html">Pedidos</a>
+            <a href="conta.html">Conta</a>
+        </nav>
+    </header>
+
+    <main class="page">
+        <div class="section-title">
+            <h1>Cardápio por unidade</h1>
+            <p>Os produtos abaixo seguem a unidade escolhida na Home. Se nenhuma unidade for selecionada, Recife será usada como padrão.</p>
+        </div>
+
+        <div class="card">
+            <label class="form">
+                <span>Trocar unidade</span>
+                <select id="unidade">
+                    <option value="">Selecione</option>
+                    <option value="recife">Recife</option>
+                    <option value="fortaleza">Fortaleza</option>
+                    <option value="salvador">Salvador</option>
+                </select>
+            </label>
+            <div class="actions">
+                <button class="btn gold" type="button" onclick="location.reload()">Atualizar cardápio</button>
+            </div>
+        </div>
+
+        <section class="grid" id="listaProdutos"></section>
+    </main>
+
+    <footer class="footer">
+        <p>Raízes do Nordeste</p>
+        <p>Cardápio com disponibilidade simulada por unidade.</p>
+    </footer>
+
+    <script src="js/app.js"></script>
+</body>
+
+</html>

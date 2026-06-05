@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Escolha de Unidade - Raízes do Nordeste</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <header class="header">
+        <a class="logo" href="index.html">Raízes do Nordeste</a>
+        <nav class="nav">
+            <a href="index.html">Home</a>
+            <a class="active" href="unidade.html">Unidade</a>
+            <a href="cardapio.html">Cardápio</a>
+        </nav>
+    </header>
+
+    <main class="page">
+        <div class="section-title">
+            <h1>Escolha de unidade</h1>
+            <p>Selecione Recife, Fortaleza ou Salvador para ver o cardápio correspondente.</p>
+        </div>
+
+        <section class="card">
+            <label class="form">
+                <span>Unidade de retirada</span>
+                <select id="unidade">
+                    <option value="">Selecione</option>
+                    <option value="recife">Recife</option>
+                    <option value="fortaleza">Fortaleza</option>
+                    <option value="salvador">Salvador</option>
+                </select>
+            </label>
+            <div class="actions">
+                <a class="btn gold" href="cardapio.html">Ver produtos da unidade</a>
+            </div>
+        </section>
+    </main>
+
+    <script src="js/app.js"></script>
+</body>
+
+</html>

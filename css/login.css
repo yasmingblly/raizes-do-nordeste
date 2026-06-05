@@ -1,0 +1,35 @@
+.auth-page {
+    min-height: calc(100vh - 74px);
+    display: grid;
+    place-items: center;
+    padding: 42px 16px;
+}
+
+.auth-card {
+    width: min(430px, 100%);
+    background: var(--branco);
+    border: 1px solid var(--borda);
+    border-radius: 8px;
+    padding: 28px;
+    box-shadow: 0 10px 30px rgba(15, 23, 42, .08);
+}
+
+.auth-card h1 {
+    color: var(--azul);
+    margin-bottom: 10px;
+}
+
+.auth-card > p {
+    color: var(--cinza);
+    margin-bottom: 22px;
+    line-height: 1.6;
+}
+
+.auth-card .form {
+    margin-bottom: 18px;
+}
+
+.auth-card a {
+    color: var(--azul-claro);
+    font-weight: 700;
+}
