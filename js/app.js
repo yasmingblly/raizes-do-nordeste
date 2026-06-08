@@ -1,4 +1,4 @@
-const produtos = [
+﻿const produtos = [
     {
         id: "tapioca",
         nome: "Tapioca Nordestina",
@@ -222,6 +222,68 @@ const moeda = new Intl.NumberFormat("pt-BR", {
     currency: "BRL"
 });
 
+function fecharModal(modal) {
+    modal.classList.add("closing");
+    setTimeout(() => modal.remove(), 180);
+}
+
+function mostrarModal(titulo, mensagem, aoFechar) {
+    const overlay = document.createElement("div");
+    overlay.className = "modal-overlay";
+    overlay.innerHTML = `
+        <div class="modal-box" role="dialog" aria-modal="true" aria-labelledby="modalTitulo">
+            <h2 class="modal-title" id="modalTitulo">${titulo}</h2>
+            <p class="modal-message">${mensagem}</p>
+            <div class="modal-actions">
+                <button class="btn gold" type="button">OK</button>
+            </div>
+        </div>
+    `;
+
+    const botaoOk = overlay.querySelector("button");
+    const encerrar = () => {
+        fecharModal(overlay);
+        if (aoFechar) {
+            aoFechar();
+        }
+    };
+
+    botaoOk.addEventListener("click", encerrar);
+    overlay.addEventListener("click", (event) => {
+        if (event.target === overlay) {
+            encerrar();
+        }
+    });
+
+    document.body.appendChild(overlay);
+}
+
+function mostrarConfirmacao(titulo, mensagem, aoConfirmar) {
+    const overlay = document.createElement("div");
+    overlay.className = "modal-overlay";
+    overlay.innerHTML = `
+        <div class="modal-box" role="dialog" aria-modal="true" aria-labelledby="modalConfirmacaoTitulo">
+            <h2 class="modal-title" id="modalConfirmacaoTitulo">${titulo}</h2>
+            <p class="modal-message">${mensagem}</p>
+            <div class="modal-actions">
+                <button class="btn light" type="button" data-modal-cancelar>Cancelar</button>
+                <button class="btn gold" type="button" data-modal-confirmar>Confirmar</button>
+            </div>
+        </div>
+    `;
+
+    overlay.querySelector("[data-modal-cancelar]").addEventListener("click", () => {
+        fecharModal(overlay);
+    });
+
+    overlay.querySelector("[data-modal-confirmar]").addEventListener("click", () => {
+        fecharModal(overlay);
+        aoConfirmar();
+    });
+
+    document.body.appendChild(overlay);
+}
+
 function obterCarrinho() {
     return JSON.parse(localStorage.getItem("carrinho")) || [];
 }
@@ -247,7 +309,7 @@ function adicionarCarrinho(id) {
     const unidade = unidadeAtual();
 
     if (!produto || !produtoDisponivelNaUnidade(produto, unidade)) {
-        alert("Este produto está indisponível nesta unidade.");
+        mostrarModal("Produto indisponível", "Este produto está indisponível nesta unidade.");
         return;
     }
 
@@ -261,7 +323,7 @@ function adicionarCarrinho(id) {
     }
 
     salvarCarrinho(carrinho);
-    alert("Produto adicionado à sacola.");
+    mostrarModal("Produto adicionado", "Produto adicionado à sacola.");
 }
 
 function produtoPorId(id) {
@@ -509,7 +571,7 @@ function limparCarrinho() {
 
 function tentarFinalizarCarrinho() {
     if (!obterCarrinho().length) {
-        alert("Adicione pelo menos um item à sacola antes de finalizar o pedido.");
+        mostrarModal("Sacola vazia", "Adicione pelo menos um item à sacola antes de finalizar o pedido.");
         return;
     }
 
@@ -518,8 +580,13 @@ function tentarFinalizarCarrinho() {
 
 function finalizarPedido() {
     if (!obterCarrinho().length) {
-        alert("Adicione pelo menos um item à sacola antes de finalizar o pedido.");
-        window.location.href = "carrinho.html";
+        mostrarModal(
+            "Sacola vazia",
+            "Adicione pelo menos um item à sacola antes de finalizar o pedido.",
+            () => {
+                window.location.href = "carrinho.html";
+            }
+        );
         return;
     }
 
@@ -612,8 +679,9 @@ function configurarForms() {
             const form = new FormData(cadastro);
             const usuario = Object.fromEntries(form.entries());
             localStorage.setItem("usuario", JSON.stringify(usuario));
-            alert("Cadastro realizado com sucesso.");
-            window.location.href = "login.html";
+            mostrarModal("Cadastro realizado", "Cadastro realizado com sucesso.", () => {
+                window.location.href = "login.html";
+            });
         });
     }
 
@@ -627,8 +695,13 @@ function configurarForms() {
 
     if (checkout) {
         if (!obterCarrinho().length) {
-            alert("Adicione pelo menos um item à sacola antes de finalizar o pedido.");
-            window.location.href = "carrinho.html";
+            mostrarModal(
+                "Sacola vazia",
+                "Adicione pelo menos um item à sacola antes de finalizar o pedido.",
+                () => {
+                    window.location.href = "carrinho.html";
+                }
+            );
             return;
         }
 
@@ -640,9 +713,16 @@ function configurarForms() {
 }
 
 function limparDadosUsuario() {
-    localStorage.clear();
-    alert("Dados salvos foram removidos.");
-    window.location.href = "index.html";
+    mostrarConfirmacao(
+        "Limpar dados",
+        "Essa ação apagará seus dados salvos neste navegador. Deseja continuar?",
+        () => {
+            localStorage.clear();
+            mostrarModal("Dados removidos", "Dados salvos foram removidos.", () => {
+                window.location.href = "index.html";
+            });
+        }
+    );
 }
 
 configurarUnidade();
