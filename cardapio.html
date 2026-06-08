@@ -15,7 +15,7 @@
         <nav class="nav">
             <a href="index.html">Home</a>
             <a class="active" href="cardapio.html">Cardápio</a>
-            <a href="carrinho.html">Carrinho</a>
+            <a href="carrinho.html">Sacola</a>
             <a href="pedidos.html">Pedidos</a>
             <a href="conta.html">Conta</a>
         </nav>
@@ -42,7 +42,48 @@
             </div>
         </div>
 
-        <section class="grid" id="listaProdutos"></section>
+        <section class="catalog-section" id="promocoes">
+            <div class="section-title">
+                <h2>Promoções em destaque</h2>
+                <p>Ofertas do dia e benefícios para clientes do Clube Raízes.</p>
+            </div>
+
+            <div class="grid" id="promocoesCardapio"></div>
+        </section>
+
+        <nav class="menu-atalhos" aria-label="Atalhos do cardápio">
+            <a class="btn light" href="#promocoes">Promoções</a>
+            <a class="btn light" href="#comidas">Comidas</a>
+            <a class="btn light" href="#bebidas">Bebidas</a>
+            <a class="btn light" href="#sobremesas">Sobremesas</a>
+        </nav>
+
+        <section class="catalog-section" id="comidas">
+            <div class="section-title">
+                <h2>Comidas</h2>
+                <p>Pratos, tapiocas e receitas regionais disponíveis por unidade.</p>
+            </div>
+
+            <div class="grid" id="listaComidas"></div>
+        </section>
+
+        <section class="catalog-section" id="bebidas">
+            <div class="section-title">
+                <h2>Bebidas</h2>
+                <p>Sucos, refrigerantes e bebidas regionais para acompanhar seu pedido.</p>
+            </div>
+
+            <div class="grid" id="listaBebidas"></div>
+        </section>
+
+        <section class="catalog-section" id="sobremesas">
+            <div class="section-title">
+                <h2>Sobremesas</h2>
+                <p>Doces tradicionais para finalizar com sabor nordestino.</p>
+            </div>
+
+            <div class="grid" id="listaSobremesas"></div>
+        </section>
     </main>
 
     <footer class="footer">

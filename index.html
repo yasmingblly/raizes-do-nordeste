@@ -15,7 +15,7 @@
         <nav class="nav">
             <a class="active" href="index.html">Home</a>
             <a href="cardapio.html">Cardápio</a>
-            <a href="carrinho.html">Carrinho</a>
+            <a href="carrinho.html">Sacola</a>
             <a href="fidelidade.html">Pontos</a>
             <a href="login.html">Entrar</a>
         </nav>
@@ -24,8 +24,7 @@
     <main>
         <section class="hero">
             <div class="hero-inner">
-                <span class="badge">Promoções do dia</span>
-                <h1>Sabores nordestinos para pedir e retirar sem fila.</h1>
+                <h1>O autêntico gostinho da nossa cultura nordestina.</h1>
                 <p>
                     Escolha sua unidade, veja o cardápio disponível e acompanhe o pedido até a retirada.
                 </p>
@@ -70,24 +69,47 @@
                     <h3>Tapioca Nordestina</h3>
                     <p>Frango, queijo coalho e catupiry.</p>
                     <strong class="price">R$ 14,90</strong>
+                    <div class="actions">
+                        <button class="btn gold" type="button" onclick="adicionarCarrinho('tapioca')">
+                            Adicionar à sacola
+                        </button>
+                    </div>
                 </article>
                 <article class="card">
                     <span class="badge">Combo</span>
                     <h3>Cuscuz + Suco</h3>
                     <p>Pedido completo para retirada rápida.</p>
                     <strong class="price">R$ 22,90</strong>
+                    <div class="actions">
+                        <button class="btn gold" type="button" onclick="adicionarCarrinho('combo-cuscuz-suco')">
+                            Adicionar à sacola
+                        </button>
+                    </div>
                 </article>
                 <article class="card">
                     <span class="badge">Pontos</span>
                     <h3>Clube Raízes</h3>
                     <p>Acumule pontos e troque por descontos.</p>
                     <strong class="points">120 pontos</strong>
+                    <div class="actions">
+                        <a class="btn light" href="fidelidade.html">Ver clube</a>
+                        <a class="btn gold" href="fidelidade.html">Ver meus pontos</a>
+                    </div>
                 </article>
             </div>
         </section>
     </main>
 
     <footer class="footer">
+        <div class="footer-internal">
+            <h2>Acesso interno</h2>
+            <p>Área demonstrativa para atendente, cozinha e gerente.</p>
+            <div class="actions">
+                <a class="btn light" href="atendente.html">Atendente</a>
+                <a class="btn light" href="cozinha.html">Cozinha</a>
+                <a class="btn light" href="admin.html">Gerente</a>
+            </div>
+        </div>
         <p>© 2026 Raízes do Nordeste</p>
         <p>Uso de dados com transparência, consentimento e opção de exclusão.</p>
     </footer>

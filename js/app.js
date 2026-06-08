@@ -15,6 +15,7 @@ const produtos = [
         preco: 17.90,
         categoria: "Comidas",
         unidades: ["recife", "salvador"],
+        indisponivelEm: ["salvador"],
         disponivel: true
     },
     {
@@ -33,6 +34,16 @@ const produtos = [
         preco: 8.50,
         categoria: "Bebidas",
         unidades: ["recife", "fortaleza"],
+        indisponivelEm: ["recife"],
+        disponivel: true
+    },
+    {
+        id: "combo-cuscuz-suco",
+        nome: "Cuscuz + Suco",
+        descricao: "Cuscuz completo acompanhado de suco regional.",
+        preco: 22.90,
+        categoria: "Combos",
+        unidades: ["recife", "fortaleza", "salvador"],
         disponivel: true
     },
     {
@@ -60,6 +71,7 @@ const produtos = [
         preco: 24.90,
         categoria: "Comidas",
         unidades: ["recife", "fortaleza", "salvador"],
+        indisponivelEm: ["recife"],
         disponivel: true
     },
     {
@@ -69,6 +81,7 @@ const produtos = [
         preco: 32.90,
         categoria: "Comidas",
         unidades: ["recife", "salvador"],
+        indisponivelEm: ["recife"],
         disponivel: true
     },
     {
@@ -87,6 +100,7 @@ const produtos = [
         preco: 19.90,
         categoria: "Comidas",
         unidades: ["recife", "salvador"],
+        indisponivelEm: ["fortaleza"],
         disponivel: true
     },
     {
@@ -96,6 +110,7 @@ const produtos = [
         preco: 7.90,
         categoria: "Bebidas",
         unidades: ["recife", "fortaleza", "salvador"],
+        indisponivelEm: ["fortaleza"],
         disponivel: true
     },
     {
@@ -141,6 +156,7 @@ const produtos = [
         preco: 6.90,
         categoria: "Bebidas",
         unidades: ["recife", "fortaleza", "salvador"],
+        indisponivelEm: ["salvador"],
         disponivel: true
     },
     {
@@ -168,6 +184,7 @@ const produtos = [
         preco: 10.90,
         categoria: "Sobremesas",
         unidades: ["recife", "fortaleza", "salvador"],
+        indisponivelEm: ["fortaleza"],
         disponivel: true
     },
     {
@@ -177,6 +194,7 @@ const produtos = [
         preco: 12.90,
         categoria: "Sobremesas",
         unidades: ["recife", "fortaleza", "salvador"],
+        indisponivelEm: ["salvador"],
         disponivel: true
     },
     {
@@ -212,7 +230,27 @@ function salvarCarrinho(carrinho) {
     localStorage.setItem("carrinho", JSON.stringify(carrinho));
 }
 
+function unidadeAtual() {
+    return localStorage.getItem("unidadeSelecionada") || "recife";
+}
+
+function produtoApareceNaUnidade(produto, unidade) {
+    return produto.unidades.includes(unidade) || (produto.indisponivelEm || []).includes(unidade);
+}
+
+function produtoDisponivelNaUnidade(produto, unidade) {
+    return produto.disponivel && produto.unidades.includes(unidade) && !(produto.indisponivelEm || []).includes(unidade);
+}
+
 function adicionarCarrinho(id) {
+    const produto = produtoPorId(id);
+    const unidade = unidadeAtual();
+
+    if (!produto || !produtoDisponivelNaUnidade(produto, unidade)) {
+        alert("Este produto está indisponível nesta unidade.");
+        return;
+    }
+
     const carrinho = obterCarrinho();
     const item = carrinho.find((produto) => produto.id === id);
 
@@ -223,7 +261,7 @@ function adicionarCarrinho(id) {
     }
 
     salvarCarrinho(carrinho);
-    alert("Produto adicionado ao carrinho.");
+    alert("Produto adicionado à sacola.");
 }
 
 function produtoPorId(id) {
@@ -254,31 +292,116 @@ function configurarUnidade() {
     });
 }
 
-function renderizarCardapio() {
-    const lista = document.getElementById("listaProdutos");
+function criarCardProduto(produto, unidade) {
+    const disponivel = produtoDisponivelNaUnidade(produto, unidade);
 
-    if (!lista) {
-        return;
-    }
-
-    const unidade = localStorage.getItem("unidadeSelecionada") || "recife";
-    const filtrados = produtos.filter((produto) => produto.unidades.includes(unidade));
-
-    lista.innerHTML = filtrados.map((produto) => `
+    return `
         <article class="card">
             <span class="badge">${produto.categoria}</span>
             <h3>${produto.nome}</h3>
             <p>${produto.descricao}</p>
-            <p class="muted">${produto.disponivel ? "Disponível" : "Indisponível"}</p>
+            <p class="muted">${disponivel ? "Disponível" : "Indisponível nesta unidade"}</p>
             <strong class="price">${moeda.format(produto.preco)}</strong>
             <div class="actions">
                 <a class="btn light" href="produto.html?id=${produto.id}">Detalhes</a>
-                <button class="btn gold" type="button" onclick="adicionarCarrinho('${produto.id}')">
-                    Adicionar
+                <button class="btn gold" type="button" onclick="adicionarCarrinho('${produto.id}')" ${disponivel ? "" : "disabled"}>
+                    Adicionar à sacola
                 </button>
             </div>
         </article>
-    `).join("");
+    `;
+}
+
+function criarCardPromocao(promocao, unidade) {
+    if (promocao.tipo === "link") {
+        return `
+            <article class="card">
+                <span class="badge">${promocao.selo}</span>
+                <h3>${promocao.titulo}</h3>
+                <p>${promocao.descricao}</p>
+                <div class="actions">
+                    <a class="btn gold" href="${promocao.href}">${promocao.botao}</a>
+                </div>
+            </article>
+        `;
+    }
+
+    const produto = produtoPorId(promocao.produtoId);
+    const disponivel = produto && produtoDisponivelNaUnidade(produto, unidade);
+
+    return `
+        <article class="card">
+            <span class="badge">${promocao.selo}</span>
+            <h3>${promocao.titulo}</h3>
+            <p>${promocao.descricao}</p>
+            <p class="muted">${disponivel ? "Disponível" : "Indisponível nesta unidade"}</p>
+            <strong class="price">${produto ? moeda.format(produto.preco) : ""}</strong>
+            <div class="actions">
+                <button class="btn gold" type="button" onclick="adicionarCarrinho('${promocao.produtoId}')" ${disponivel ? "" : "disabled"}>
+                    Adicionar à sacola
+                </button>
+            </div>
+        </article>
+    `;
+}
+
+function renderizarSecaoCategoria(idElemento, categoria, unidade) {
+    const area = document.getElementById(idElemento);
+
+    if (!area) {
+        return;
+    }
+
+    const itens = produtos.filter((produto) => (
+        produto.categoria === categoria &&
+        produtoApareceNaUnidade(produto, unidade)
+    ));
+
+    area.innerHTML = itens.map((produto) => criarCardProduto(produto, unidade)).join("");
+}
+
+function renderizarPromocoesCardapio(unidade) {
+    const area = document.getElementById("promocoesCardapio");
+
+    if (!area) {
+        return;
+    }
+
+    const promocoes = [
+        {
+            tipo: "produto",
+            selo: "Promoção do dia",
+            titulo: "Tapioca Nordestina",
+            descricao: "Frango, queijo coalho e catupiry com preço especial.",
+            produtoId: "tapioca"
+        },
+        {
+            tipo: "produto",
+            selo: "Combo",
+            titulo: "Cuscuz + Suco",
+            descricao: "Cuscuz completo acompanhado de suco regional.",
+            produtoId: "combo-cuscuz-suco"
+        },
+        {
+            tipo: "link",
+            selo: "Clube Raízes",
+            titulo: "Ver meus pontos",
+            descricao: "Acompanhe seu saldo e resgate benefícios do programa de fidelidade.",
+            href: "fidelidade.html",
+            botao: "Ver meus pontos"
+        }
+    ];
+
+    area.innerHTML = promocoes.map((promocao) => criarCardPromocao(promocao, unidade)).join("");
+}
+
+function renderizarCardapio() {
+    const unidade = unidadeAtual();
+
+    renderizarPromocoesCardapio(unidade);
+    renderizarSecaoCategoria("listaComidas", "Comidas", unidade);
+    renderizarSecaoCategoria("listaBebidas", "Bebidas", unidade);
+    renderizarSecaoCategoria("listaSobremesas", "Sobremesas", unidade);
 }
 
 function renderizarDetalhesProduto() {
@@ -290,12 +413,14 @@ function renderizarDetalhesProduto() {
 
     const params = new URLSearchParams(window.location.search);
     const produto = produtoPorId(params.get("id")) || produtos[0];
+    const disponivel = produtoDisponivelNaUnidade(produto, unidadeAtual());
 
     area.innerHTML = `
         <div class="card">
             <span class="badge">Produto regional</span>
             <h1>${produto.nome}</h1>
             <p>${produto.descricao}</p>
+            <p class="muted">${disponivel ? "Disponível" : "Indisponível nesta unidade"}</p>
             <strong class="price">${moeda.format(produto.preco)}</strong>
             <form class="form">
                 <label>
@@ -306,8 +431,8 @@ function renderizarDetalhesProduto() {
                     Observações
                     <textarea placeholder="Ex.: sem cebola, mais queijo coalho"></textarea>
                 </label>
-                <button class="btn gold" type="button" onclick="adicionarCarrinho('${produto.id}')">
-                    Adicionar ao carrinho
+                <button class="btn gold" type="button" onclick="adicionarCarrinho('${produto.id}')" ${disponivel ? "" : "disabled"}>
+                    Adicionar à sacola
                 </button>
             </form>
         </div>
@@ -326,7 +451,7 @@ function renderizarCarrinho() {
     const carrinho = obterCarrinho();
 
     if (!carrinho.length) {
-        area.innerHTML = '<p class="muted">Seu carrinho está vazio.</p>';
+        area.innerHTML = '<p class="muted">Sua sacola está vazia.</p>';
         total.textContent = moeda.format(0);
         if (finalizar) {
             finalizar.disabled = true;
@@ -384,7 +509,7 @@ function limparCarrinho() {
 
 function tentarFinalizarCarrinho() {
     if (!obterCarrinho().length) {
-        alert("Adicione pelo menos um item ao carrinho antes de finalizar o pedido.");
+        alert("Adicione pelo menos um item à sacola antes de finalizar o pedido.");
         return;
     }
 
@@ -393,7 +518,7 @@ function tentarFinalizarCarrinho() {
 
 function finalizarPedido() {
     if (!obterCarrinho().length) {
-        alert("Adicione pelo menos um item ao carrinho antes de finalizar o pedido.");
+        alert("Adicione pelo menos um item à sacola antes de finalizar o pedido.");
         window.location.href = "carrinho.html";
         return;
     }
@@ -432,6 +557,50 @@ function renderizarPedido() {
     `;
 }
 
+function configurarPainelGerente() {
+    const filtroProdutos = document.getElementById("filtroProdutos");
+    const resultadoProdutos = document.getElementById("resultadoProdutos");
+    const filtroPedidos = document.getElementById("filtroPedidos");
+    const resultadoPedidos = document.getElementById("resultadoPedidos");
+    const filtroFaturamento = document.getElementById("filtroFaturamento");
+    const resultadoFaturamento = document.getElementById("resultadoFaturamento");
+
+    const dadosUnidades = {
+        recife: { nome: "Recife", pedidos: 26, faturamento: 819 },
+        fortaleza: { nome: "Fortaleza", pedidos: 22, faturamento: 693 },
+        salvador: { nome: "Salvador", pedidos: 34, faturamento: 1071 }
+    };
+
+    if (filtroProdutos && resultadoProdutos) {
+        filtroProdutos.addEventListener("change", () => {
+            const categoria = filtroProdutos.value;
+            const itens = produtos.filter((produto) => produto.categoria === categoria);
+
+            resultadoProdutos.innerHTML = itens.map((produto) => (
+                `<li>${produto.nome}</li>`
+            )).join("");
+        });
+    }
+
+    if (filtroPedidos && resultadoPedidos) {
+        filtroPedidos.addEventListener("change", () => {
+            const unidade = dadosUnidades[filtroPedidos.value];
+            resultadoPedidos.textContent = unidade
+                ? `${unidade.nome} possui ${unidade.pedidos} pedidos registrados hoje.`
+                : "";
+        });
+    }
+
+    if (filtroFaturamento && resultadoFaturamento) {
+        filtroFaturamento.addEventListener("change", () => {
+            const unidade = dadosUnidades[filtroFaturamento.value];
+            resultadoFaturamento.textContent = unidade
+                ? `Faturamento estimado em ${unidade.nome}: ${moeda.format(unidade.faturamento)}.`
+                : "";
+        });
+    }
+}
+
 function configurarForms() {
     const cadastro = document.getElementById("cadastroForm");
     const login = document.getElementById("loginForm");
@@ -458,7 +627,7 @@ function configurarForms() {
 
     if (checkout) {
         if (!obterCarrinho().length) {
-            alert("Adicione pelo menos um item ao carrinho antes de finalizar o pedido.");
+            alert("Adicione pelo menos um item à sacola antes de finalizar o pedido.");
             window.location.href = "carrinho.html";
             return;
         }
@@ -481,4 +650,5 @@ renderizarCardapio();
 renderizarDetalhesProduto();
 renderizarCarrinho();
 renderizarPedido();
+configurarPainelGerente();
 configurarForms();

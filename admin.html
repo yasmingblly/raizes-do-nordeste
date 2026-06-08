@@ -28,13 +28,33 @@
         <section class="grid">
             <article class="card">
                 <span class="badge">Vendas</span>
-                <h3>R$ 1.284,50</h3>
-                <p>Faturamento simulado do dia.</p>
+                <h3>Faturamento por unidade</h3>
+                <p>Consulte o faturamento estimado com ticket médio de R$ 31,50.</p>
+                <label class="form compact-form">
+                    <span>Unidade</span>
+                    <select id="filtroFaturamento">
+                        <option value="">Escolha uma opção</option>
+                        <option value="recife">Recife</option>
+                        <option value="fortaleza">Fortaleza</option>
+                        <option value="salvador">Salvador</option>
+                    </select>
+                </label>
+                <p class="muted" id="resultadoFaturamento"></p>
             </article>
             <article class="card">
                 <span class="badge">Pedidos</span>
-                <h3>42 pedidos</h3>
-                <p>Clientes atendidos nas unidades.</p>
+                <h3>Pedidos por unidade</h3>
+                <p>Veja a quantidade de pedidos registrados hoje.</p>
+                <label class="form compact-form">
+                    <span>Unidade</span>
+                    <select id="filtroPedidos">
+                        <option value="">Escolha uma opção</option>
+                        <option value="recife">Recife</option>
+                        <option value="fortaleza">Fortaleza</option>
+                        <option value="salvador">Salvador</option>
+                    </select>
+                </label>
+                <p class="muted" id="resultadoPedidos"></p>
             </article>
             <article class="card">
                 <span class="badge">Campanhas</span>
@@ -43,12 +63,22 @@
             </article>
             <article class="card">
                 <span class="badge">Produtos</span>
-                <h3>18 cadastrados</h3>
-                <p>Itens disponíveis por unidade.</p>
+                <h3>Produtos cadastrados</h3>
+                <p>Filtre os itens cadastrados por categoria.</p>
+                <label class="form compact-form">
+                    <span>Categoria</span>
+                    <select id="filtroProdutos">
+                        <option value="">Escolha uma opção</option>
+                        <option value="Comidas">Comidas</option>
+                        <option value="Bebidas">Bebidas</option>
+                        <option value="Sobremesas">Sobremesas</option>
+                    </select>
+                </label>
+                <ul class="admin-list" id="resultadoProdutos"></ul>
             </article>
             <article class="card">
                 <span class="badge">Usuários</span>
-                <h3>128 clientes</h3>
+                <h3>Clientes do Clube Raízes</h3>
                 <p>Base simulada para fidelidade.</p>
             </article>
             <article class="card">
@@ -58,6 +88,8 @@
             </article>
         </section>
     </main>
+
+    <script src="js/app.js"></script>
 </body>
 
 </html>
