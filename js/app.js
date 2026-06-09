@@ -227,35 +227,47 @@ function fecharModal(modal) {
     setTimeout(() => modal.remove(), 180);
 }
 
-function mostrarModal(titulo, mensagem, aoFechar) {
+function mostrarModal(titulo, mensagem, aoFechar, opcoes = {}) {
     const overlay = document.createElement("div");
     overlay.className = "modal-overlay";
     overlay.innerHTML = `
         <div class="modal-box" role="dialog" aria-modal="true" aria-labelledby="modalTitulo">
             <h2 class="modal-title" id="modalTitulo">${titulo}</h2>
             <p class="modal-message">${mensagem}</p>
-            <div class="modal-actions">
-                <button class="btn gold" type="button">OK</button>
-            </div>
+            ${opcoes.semBotao ? "" : `
+                <div class="modal-actions">
+                    <button class="btn gold" type="button">OK</button>
+                </div>
+            `}
         </div>
     `;
 
     const botaoOk = overlay.querySelector("button");
     const encerrar = () => {
+        if (!overlay.isConnected) {
+            return;
+        }
+
         fecharModal(overlay);
         if (aoFechar) {
             aoFechar();
         }
     };
 
-    botaoOk.addEventListener("click", encerrar);
-    overlay.addEventListener("click", (event) => {
-        if (event.target === overlay) {
-            encerrar();
-        }
-    });
+    if (botaoOk) {
+        botaoOk.addEventListener("click", encerrar);
+    }
+
+    if (!opcoes.bloquearCliqueFora) {
+        overlay.addEventListener("click", (event) => {
+            if (event.target === overlay) {
+                encerrar();
+            }
+        });
+    }
 
     document.body.appendChild(overlay);
+    return overlay;
 }
 
 function mostrarConfirmacao(titulo, mensagem, aoConfirmar) {
@@ -306,6 +318,13 @@ function produtoDisponivelNaUnidade(produto, unidade) {
 
 function adicionarCarrinho(id) {
     const produto = produtoPorId(id);
+    const unidadeSelecionada = localStorage.getItem("unidadeSelecionada");
+
+    if (!unidadeSelecionada) {
+        mostrarModal("Escolha uma unidade", "Selecione uma unidade antes de adicionar produtos à sacola.");
+        return;
+    }
+
     const unidade = unidadeAtual();
 
     if (!produto || !produtoDisponivelNaUnidade(produto, unidade)) {
@@ -578,18 +597,7 @@ function tentarFinalizarCarrinho() {
     window.location.href = "checkout.html";
 }
 
-function finalizarPedido() {
-    if (!obterCarrinho().length) {
-        mostrarModal(
-            "Sacola vazia",
-            "Adicione pelo menos um item à sacola antes de finalizar o pedido.",
-            () => {
-                window.location.href = "carrinho.html";
-            }
-        );
-        return;
-    }
-
+function registrarPedidoAprovado() {
     const numero = Math.floor(1000 + Math.random() * 9000);
     const pedido = {
         numero,
@@ -601,6 +609,58 @@ function finalizarPedido() {
     localStorage.setItem("pedidoAtual", JSON.stringify(pedido));
     localStorage.removeItem("carrinho");
     window.location.href = "confirmacao.html";
+}
+
+function finalizarPedido(formulario) {
+    if (!obterCarrinho().length) {
+        mostrarModal(
+            "Sacola vazia",
+            "Adicione pelo menos um item à sacola antes de finalizar o pedido.",
+            () => {
+                window.location.href = "carrinho.html";
+            }
+        );
+        return;
+    }
+
+    if (formulario && !formulario.checkValidity()) {
+        formulario.reportValidity();
+        return;
+    }
+
+    if (formulario && formulario.dataset.pagamentoProcessando === "true") {
+        return;
+    }
+
+    if (formulario) {
+        formulario.dataset.pagamentoProcessando = "true";
+    }
+
+    const botaoPagamento = formulario ? formulario.querySelector('button[type="submit"]') : null;
+    if (botaoPagamento) {
+        botaoPagamento.disabled = true;
+    }
+
+    const modalProcessando = mostrarModal(
+        "Processando pagamento",
+        "Aguarde enquanto enviamos sua solicitação ao sistema de pagamento.",
+        null,
+        { semBotao: true, bloquearCliqueFora: true }
+    );
+
+    setTimeout(() => {
+        fecharModal(modalProcessando);
+        mostrarModal(
+            "Pagamento aprovado",
+            "Seu pagamento foi aprovado e o pedido foi enviado para preparo.",
+            null,
+            { semBotao: true, bloquearCliqueFora: true }
+        );
+
+        setTimeout(() => {
+            registrarPedidoAprovado();
+        }, 1000);
+    }, 1800);
 }
 
 function renderizarPedido() {
@@ -707,7 +767,7 @@ function configurarForms() {
 
         checkout.addEventListener("submit", (event) => {
             event.preventDefault();
-            finalizarPedido();
+            finalizarPedido(checkout);
         });
     }
 }
